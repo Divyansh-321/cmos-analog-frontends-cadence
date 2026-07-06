@@ -261,11 +261,11 @@ The performance metrics verified across both technology nodes and system boundar
 
 ## Documentation & Resources
 
-For detailed methodology, mathematical derivations, and Cadence environment setup, please refer to the following core project files:
+For detailed physical derivations, setup steps, and automated parameter tracking data, please refer to the primary project logs:
 
-* 📄 **[Full Project Report (PDF)](docs/report.pdf):** Comprehensive documentation of the design process, theoretical background, and extended simulation results.
-* ⚙️ **[Cadence Design Flow Notes](cadence_notes/design_flow.txt):** Step-by-step instructions and environment configurations used for schematic capture and simulation in Virtuoso.
-* 📊 **[Parameter Sweep Summary](cadence_notes/parameter_sweep_summary.txt):** Automated aspect ratio and sizing sweep data used to isolate transconductance paths and optimize the 45 nm node.
+* 📄 **[Full Project Report (PDF)](docs/report.pdf):** Detailed documentation of design choices, mathematical derivations, and multi-node analysis.
+* 📊 **[Parameter Sweep Summary](cadence_notes/parameter_sweep_summary.txt):** Raw automated aspect ratio sweep data used to stabilize transconductance paths and minimize layout sensitivity.
+* ⚙️ **[Cadence Design Flow Notes](cadence_notes/design_flow.txt):** The master simulation workflow mapping log and graphical audit trail linking all 17 verification testbenches directly to their workspace output plots.
 
 *Note: This repository contains design schematics, simulation results, and extracted documentation. The original Cadence design database is not included as it depends on proprietary GPDK libraries.*
 
