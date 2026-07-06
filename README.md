@@ -269,9 +269,9 @@ The performance metrics verified across both technology nodes and system boundar
 * **Legacy 180nm Baseline Two-Stage Operational Amplifier Reference Design:**
   ![Legacy 180nm Baseline Op-Amp Schematic](design_screenshots/opamp180.png)
 * **CMRR Evaluation Test Setup Schematic Configuration:**
-  ![CMRR Evaluation Test Setup](design_screenshots/opamp_tester_cmrr.png)
+  ![CMRR Evaluation Test Setup](results/opamp_tester_cmrr.png)
 * **PSRR+ Evaluation Test Setup Schematic Configuration:**
-  ![PSRR+ Evaluation Test Setup](design_screenshots/opamp_tester_psrr.png)
+  ![PSRR+ Evaluation Test Setup](results/opamp_tester_psrr.png)
 
 ### 2. 45nm Operational Amplifier Characterization Traces
 * **Open-Loop Gain & Phase Response Frequency Sweep:**
