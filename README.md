@@ -193,6 +193,8 @@ The reported AC, transient, DC, and parametric analyses were performed in Cadenc
 
 # Core Design Equations
 
+The analytical design equations used for the two-stage operational amplifier topology sizing, boundary conditions, and open-loop DC gain calculations are formalized below:
+
 ### 1. Miller Compensation Boundary Condition
 $$C_c \ge 0.22 \cdot C_L$$
 
@@ -201,6 +203,24 @@ $$g_{m1} = \text{GBW} \cdot 2\pi C_c$$
 
 ### 3. Aspect Ratio Definition for Input Differential Pairs
 $$\left(\frac{W}{L}\right)_{1,2} = \frac{g_{m1}^2}{I_{D5}\mu_n C_{ox}}$$
+
+### 4. Aspect Ratio Definition for Active Current Mirror Loads
+$$\left(\frac{W}{L}\right)_{3,4} = \frac{2 I_{D3}}{\mu_p C_{ox} (V_{DD} - V_{ICMR(+)} - |V_{tp}|)^2}$$
+
+### 5. Tail Current Bias Device Conditioning
+$$I_{D5} = \frac{1}{2} \mu_n C_{ox} \left(\frac{W}{L}\right)_5 V_{DSAT}^2$$
+
+### 6. Active Load Stage Transconductance
+$$g_{m4} = \sqrt{2 I_{D4} \mu_p C_{ox} \left(\frac{W}{L}\right)_4}$$
+
+### 7. Common-Source Driver Stage Sizing Constraints
+$$\left(\frac{W}{L}\right)_6 = \frac{g_{m6}}{g_{m4}} \left(\frac{W}{L}\right)_4$$
+
+### 8. Second-Stage Active Load Sink Sizing Constraints
+$$\left(\frac{W}{L}\right)_7 = \frac{I_{D7}}{I_{D5}} \left(\frac{W}{L}\right)_5$$
+
+### 9. Total System Open-Loop Small-Signal DC Voltage Gain
+$$A_v = \left( \frac{g_{m1}}{g_{ds2} + g_{ds4}} \right) \left( \frac{g_{m6}}{g_{ds6} + g_{ds7}} \right)$$
 
 ---
 
