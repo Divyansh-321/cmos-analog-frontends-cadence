@@ -9,8 +9,8 @@ ensure a transparent, scannable engineering audit:
   - Core 45nm Operational Amplifier Cell: design_screenshots/opamp.png
   - Legacy 180nm Reference Amplifier Cell: design_screenshots/opamp180.png
   - High-Isolation 45nm Instrumentation Amplifier: design_screenshots/instr_final.png
-  - Active Testbench Circuit for Op-Amp CMRR: design_screenshots/opamp_tester_cmrr.png
-  - Active Testbench Circuit for Op-Amp PSRR+: design_screenshots/opamp_tester_psrr.png
+  - Active Testbench Circuit for Op-Amp CMRR: results/opamp_tester_cmrr.png
+  - Active Testbench Circuit for Op-Amp PSRR+: results/opamp_tester_psrr.png
 
 [2. 180nm TRACKING BASELINE ANALYSES]
   - Verification Target: Open-Loop Baseline Frequency Boundary Tracking

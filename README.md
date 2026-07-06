@@ -259,48 +259,64 @@ The performance metrics verified across both technology nodes and system boundar
 
 ---
 
-# Demonstration
+## Documentation & Resources
 
-### 1. Cadence Virtuoso Environment System Topologies
-* **Complete 45nm Instrumentation Amplifier Schematic Canvas:**
-  ![Complete 45nm Instrumentation Amplifier Schematic](design_screenshots/instr_final.png)
-* **Core 45nm Two-Stage Miller-Compensated Operational Amplifier Block:**
+For detailed methodology, mathematical derivations, and Cadence environment setup, please refer to the following core project files:
+
+* 📄 **[Full Project Report (PDF)](docs/report.pdf):** Comprehensive documentation of the design process, theoretical background, and extended simulation results.
+* ⚙️ **[Cadence Design Flow Notes](cadence_notes/design_flow.txt):** Step-by-step instructions and environment configurations used for schematic capture and simulation in Virtuoso.
+* 📊 **[Parameter Sweep Summary](cadence_notes/parameter_sweep_summary.txt):** Automated aspect ratio and sizing sweep data used to isolate transconductance paths and optimize the 45 nm node.
+
+*Note: This repository contains design schematics, simulation results, and extracted documentation. The original Cadence design database is not included as it depends on proprietary GPDK libraries.*
+
+---
+
+## Simulation Workflow & Graphical Demonstration
+
+The following cellviews, verification testbenches, and macro behaviors follow the structural tracking map documented inside `design_flow.txt`:
+
+### 1. Cadence Schematic Cellviews & Design Screenshots
+* **Core 45 nm Operational Amplifier Cell:**
   ![Core 45nm Two-Stage Op-Amp Schematic](design_screenshots/opamp.png)
-* **Legacy 180nm Baseline Two-Stage Operational Amplifier Reference Design:**
+* **Legacy 180 nm Reference Amplifier Cell:**
   ![Legacy 180nm Baseline Op-Amp Schematic](design_screenshots/opamp180.png)
+* **High-Isolation 45 nm Instrumentation Amplifier:**
+  ![Complete 45nm Instrumentation Amplifier Schematic](design_screenshots/instr_final.png)
 * **CMRR Evaluation Test Setup Schematic Configuration:**
   ![CMRR Evaluation Test Setup](results/opamp_tester_cmrr.png)
 * **PSRR+ Evaluation Test Setup Schematic Configuration:**
   ![PSRR+ Evaluation Test Setup](results/opamp_tester_psrr.png)
 
-### 2. 45nm Operational Amplifier Characterization Traces
-* **Open-Loop Gain & Phase Response Frequency Sweep:**
-  ![Gain and Phase Graph of 45nm Op-Amp](results/opamp_45nm/gain_opamp.jpg)
-* **Large-Signal Transient Tracking Response Profile:**
-  ![Transient Response of 45nm Op-Amp](results/opamp_45nm/tran_opamp.jpg)
-* **Isolated Block Common-Mode Rejection Sweep Curve:**
-  ![CMRR vs Frequency Simulation Result for 45nm Op-Amp](results/opamp_45nm/opamp_cmrr_only.jpg)
-* **Isolated Block Power Supply Noise Rejection Sweeps:**
-  ![PSRR+ vs Frequency Simulation Result for 45nm Op-Amp](results/opamp_45nm/opamp_psrr.jpg)
-* **Systematic Input Offset Voltage DC Transfer Characterization:**
-  ![DC Analysis Showing Systematic Input Offset Voltage](results/opamp_45nm/opamp_dc_offset.jpg)
 
-### 3. Legacy 180nm Baseline Calibration Traces
-* **Legacy Node Gain & Phase Plot Extraction:**
+
+### 2. 180 nm Tracking Baseline Analyses
+* **Gain & Phase Sweep Response Profiles:**
   ![Gain and Phase Plot of 180nm Op-Amp](results/opamp_180nm/gain_180.jpg)
-* **Legacy Node Magnitude Plateau Frequency Curve:**
+* **Isolated Magnitude Band Plateau:**
   ![Magnitude Response of 180nm Op-Amp](results/opamp_180nm/magnitude180opamp.jpg)
 
-### 4. Integrated 45nm Instrumentation Amplifier Verification Traces
-* **Closed-Loop System AC Response (Gain in dB Profiling):**
+### 3. 45 nm Block-Level Optimization Analyses
+* **Bode Plots Validating Phase Margin = 64.8°:**
+  ![Gain and Phase Graph of 45nm Op-Amp](results/opamp_45nm/gain_opamp.jpg)
+* **Large-Signal Transient Tracking Response:**
+  ![Transient Response of 45nm Op-Amp](results/opamp_45nm/tran_opamp.jpg)
+* **Isolated Op-Amp Rejection Sweep:**
+  ![CMRR vs Frequency Simulation Result for 45nm Op-Amp](results/opamp_45nm/opamp_cmrr_only.jpg)
+* **Isolated Power Supply Rejection Sweep:**
+  ![PSRR+ vs Frequency Simulation Result for 45nm Op-Amp](results/opamp_45nm/opamp_psrr.jpg)
+* **DC Analysis Showing 6.15 mV Systematic Offset:**
+  ![DC Analysis Showing Systematic Input Offset Voltage](results/opamp_45nm/opamp_dc_offset.jpg)
+
+### 4. System-Level 45 nm Instrumentation Amplifier Characterization
+* **System AC Transfer Gain in dB:**
   ![AC Response Gain in dB of the Instrumentation Amplifier](results/instrumentation_amp_45nm/instr_final_ac.jpg)
-* **Closed-Loop Linear Magnitude Verification Curve confirming System Gain ≈ 5:**
+* **Linear Magnitude Mapping Confirming Gain ≈ 5:**
   ![AC Response Linear Magnitude Confirming Gain ≈ 5](results/instrumentation_amp_45nm/instr_final_gain.jpg)
-* **System Closed-Loop Transient Linearity Performance Output:**
+* **System Closed-Loop Transient Response:**
   ![Transient Response of the Instrumentation Amplifier](results/instrumentation_amp_45nm/instr_final_tran.jpg)
-* **System-Level Multi-Op-Amp Enhanced Common Mode Rejection Spectrum:**
+* **System Enhanced CMRR Spectrum:**
   ![CMRR of Complete Instrumentation Amplifier](results/instrumentation_amp_45nm/instrum_cmrr_only_new.jpg)
-* **System-Level Loaded Network Power Supply Rejection Spectrum:**
+* **System Loaded Network PSRR Spectrum:**
   ![PSRR of Complete Instrumentation Amplifier](results/instrumentation_amp_45nm/instrum_psrr.jpg)
 
 ---
