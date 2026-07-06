@@ -1,0 +1,50 @@
+================================================================================
+SPECTRE PARAMETRIC SWEEP SENSITIVITY SUMMARY: 45nm TWO-STAGE OP-AMP
+================================================================================
+Author Workspace Focus
+Baseline Sizing Parameters: L = 200nm (Standardized for short-channel regulation)
+Baseline Open-Loop DC Gain: 41.75 dB
+
+The open-loop AC gain response of the custom 45nm Miller-compensated cell was 
+subjected to an automated parametric sweep within the Virtuoso ADE environment to 
+isolate the highest sensitivity aspect ratio vectors (Cross-referenced with 
+results/opamp_45nm/gain_opamp.jpg and Table 4.1 in the main technical report):
+
+1. INPUT DIFFERENTIAL PAIR (M1, M2) - NMOS
+   - Baseline Width: 2.2 um (Transistor Aspect Ratio: 10.93)
+   - Perturbation Delta (+): W -> 3.0 um  ==> Open-loop gain tracks to 42.15 dB
+   - Perturbation Delta (-): W -> 1.6 um  ==> Open-loop gain drops to 41.10 dB
+   - Dynamics: Primary sensitivity vector driving input transconductance (gm1). 
+     Increasing width boosts gm1, raising the first-stage gain pole but requiring 
+     careful layout matching to handle input parasitic capacitance loading.
+
+2. ACTIVE CURRENT MIRROR LOAD (M3, M4) - PMOS
+   - Baseline Width: 170 nm (Transistor Aspect Ratio: 0.84)
+   - Perturbation Delta (+): W -> 220 nm  ==> Open-loop gain drops to 32.59 dB
+   - Perturbation Delta (-): W -> 120 nm  ==> Open-loop gain tracks to 43.42 dB
+   - Dynamics: Severe sensitivity loop bounded by output resistance (ro). Scaling up 
+     the width shrinks VDSAT, pushing the PMOS current mirror toward the triode 
+     boundary. This degrades first-stage output impedance, causing severe gain 
+     attenuation.
+
+3. SECOND-STAGE COMMON-SOURCE DRIVER (M6) - PMOS
+   - Baseline Width: 7.04 um (Transistor Aspect Ratio: 35.20)
+   - Perturbation Delta (+): W -> 8.04 um ==> Open-loop gain tracks to 45.17 dB
+   - Perturbation Delta (-): W -> 6.04 um ==> Open-loop gain drops to 33.19 dB
+   - Dynamics: Main driver for second-stage transconductance (gm6). Increasing 
+     width extends the open-loop voltage gain ceiling but requires tuning the Miller 
+     capacitor (Cc) size to protect the 60-degree Phase Margin target.
+
+4. SECOND-STAGE ACTIVE LOAD (M7) - NMOS
+   - Baseline Width: 13.07 um (Transistor Aspect Ratio: 65.35)
+   - Perturbation Delta (+): W -> 14.07 um ==> Open-loop gain drops to 37.53 dB
+   - Perturbation Delta (-): W -> 12.07 um ==> Open-loop gain tracks to 44.15 dB
+   - Dynamics: Modulates channel-length modulation vectors and output node loading. 
+     Oversizing introduces excessive drain parasitic loading, lowering secondary 
+     output resistance parameters.
+
+CONCLUSION:
+Second-stage transconductance (M6) and first-stage active load parameters (M3, M4) 
+are the most layout-sensitive paths governing submicron analog gain degradation.
+
+================================================================================

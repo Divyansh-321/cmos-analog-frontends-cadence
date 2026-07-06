@@ -1,0 +1,39 @@
+================================================================================
+SPECTRE SIMULATION WORKFLOW MAPPING LOG & GRAPHICAL AUDIT INTEGRIY
+================================================================================
+All 17 simulation testbenches, verification test fixtures, and design cellviews 
+are explicitly linked to raw graphical plots across the workspace directory to 
+ensure a transparent, scannable engineering audit:
+
+[1. CADENCE SCHEMATIC CELLVIEWS & DESIGN SCREENSHOTS]
+  - Core 45nm Operational Amplifier Cell: design_screenshots/opamp.png
+  - Legacy 180nm Reference Amplifier Cell: design_screenshots/opamp180.png
+  - High-Isolation 45nm Instrumentation Amplifier: design_screenshots/instr_final.png
+  - Active Testbench Circuit for Op-Amp CMRR: design_screenshots/opamp_tester_cmrr.png
+  - Active Testbench Circuit for Op-Amp PSRR+: design_screenshots/opamp_tester_psrr.png
+
+[2. 180nm TRACKING BASELINE ANALYSES]
+  - Verification Target: Open-Loop Baseline Frequency Boundary Tracking
+  - Graphical Waveform Mappings:
+    * results/opamp_180nm/gain_180.jpg (Gain & Phase sweep response profiles)
+    * results/opamp_180nm/magnitude180opamp.jpg (Isolated magnitude band plateau)
+
+[3. 45nm BLOCK-LEVEL OPTIMIZATION ANALYSES]
+  - Verification Target: Submicron Characterization & Stability Boundary Analysis
+  - Graphical Waveform Mappings:
+    * results/opamp_45nm/gain_opamp.jpg (Bode plots validating Phase Margin = 64.8°)
+    * results/opamp_45nm/tran_opamp.jpg (Large-signal transient tracking response)
+    * results/opamp_45nm/opamp_cmrr_only.jpg (Isolated op-amp rejection sweep)
+    * results/opamp_45nm/opamp_psrr.jpg (Isolated power supply rejection sweep)
+    * results/opamp_45nm/opamp_dc_offset.jpg (DC analysis showing 6.15mV systematic offset)
+
+[4. SYSTEM-LEVEL 45nm INSTRUMENTATION AMPLIFIER CHARACTERIZATION]
+  - Verification Target: Closed-loop parametric resolution & network loading audits
+  - Graphical Waveform Mappings:
+    * results/instrumentation_amp_45nm/instr_final_ac.jpg (System AC transfer gain in dB)
+    * results/instrumentation_amp_45nm/instr_final_gain.jpg (Linear magnitude mapping gain ≈ 5)
+    * results/instrumentation_amp_45nm/instr_final_tran.jpg (System closed-loop transient response)
+    * results/instrumentation_amp_45nm/instrum_cmrr_only_new.jpg (System enhanced CMRR spectrum)
+    * results/instrumentation_amp_45nm/instrum_psrr.jpg (System loaded network PSRR spectrum)
+
+================================================================================

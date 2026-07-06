@@ -1,0 +1,10 @@
+# Cadence & Spectre simulation log data exclusions
+*.log
+*.log.*
+*cds*.log
+*.bak
+.cadence/
+simulation/
+cds.lib
+hdl.var
+artist_states/
