@@ -26,8 +26,8 @@ Differential Input -> 45 nm NMOS Input Differential Pair -> Active PMOS Load Sta
 
 ## Contribution Breakdown
 
-> **Scope of Work & Attribution Statement:**
-> The core OTA topology and initial geometric baseline were derived from the referenced literature by Vasanthi et al. [1] and Sharmila Banu et al. [2]. The three-op-amp instrumentation amplifier architecture, compensation strategy, headroom-recovery biasing methodology, automated parameter sensitivity analysis, cross-node technology scaling study, 17-testbench verification flow, and system-level performance evaluations presented in this repository were developed entirely as part of this project.
+**Scope of Work & Attribution Statement:**
+The core OTA topology and initial geometric baseline were derived from the referenced literature by Vasanthi et al. [1] and Sharmila Banu et al. [2]. The three-op-amp instrumentation amplifier architecture, compensation strategy, headroom-recovery biasing methodology, automated parameter sensitivity analysis, cross-node technology scaling study, 17-testbench verification flow, and system-level performance evaluations presented in this repository were developed entirely as part of this project.
 
 ### Individual Contribution (Author)
 - Designed and implemented the complete 45 nm two-stage operational amplifier macro cell in Cadence Virtuoso.
