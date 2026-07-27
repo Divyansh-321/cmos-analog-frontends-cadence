@@ -1,4 +1,4 @@
-# CMOS Analog Front-End Design & Technology Scaling Study (180nm vs 45nm)
+# CMOS Analog Front-End Design & Technology Scaling Study (180 nm vs 45 nm)
 
 An analog integrated circuit design and characterization study evaluating short-channel scaling effects using industrial PDKs in Cadence Virtuoso. This project contrasts a legacy baseline node (180 nm) against a deep-submicron node (45 nm) to implement a precision three-op-amp instrumentation amplifier (INA).
 
@@ -87,7 +87,7 @@ Rather than maximizing transistor density, channel lengths were intentionally in
 | Component / Node | Selected Approach | Rejected Alternative | Engineering Justification |
 | :--- | :--- | :--- | :--- |
 | **Process Node Scale** | **45 nm Deep Submicron** | 180 nm Traditional CMOS | **Density & Speed over Headroom:** 45 nm maximizes integration density and operating speed, but compresses the supply rail to 1.2 V and introduces severe short-channel effects. |
-| **Sizing Constraint** | **Standardized L = 200 nm** | Lithographic L = 45 nm | **Intrinsic Gain over Speed:** Sizing at 200 nm provides an intentional guardband that preserves an open-loop gain baseline of approx 41.75 dB, preventing complete gain collapse from channel-length modulation. |
+| **Sizing Constraint** | **Standardized L = 200 nm** | Lithographic L = 45 nm | **Intrinsic Gain over Speed:** Sizing at 200 nm provides an intentional guardband that preserves an open-loop gain baseline of approx 41.75 dB, preventing severe gain degradation from channel-length modulation. |
 | **Reference Bias Topology**| **Injected V_ref = 0.78 V** | Ground Reference (0 V) | **Saturation Preservation over Simplicity:** Tying the difference stage reference to 0 V pulls the common-mode level to approx 0.4 V, driving the NMOS input pair into cutoff. Injecting 0.78 V restores critical V_DS headroom. |
 
 ---
@@ -227,19 +227,23 @@ $$A_{V,\text{closed}} = \left(1 + \frac{R_2 + R_4}{R_3}\right) \left(\frac{R_8}{
 
 # Limitations
 
-* **Headroom Compression Bounded by Rail Limits:** The 1.2V supply limits large-signal output swings, risking device saturation loss if excursions exceed compliance boundaries.
-* **Short-Channel Output Resistance Attenuation:** The structural $L = 200\text{nm}$ limit exhibits severe channel-length modulation, restricting open-loop DC gain to a hard baseline ceiling of $\approx41.75\text{ dB}$.
+* **Headroom Compression Bounded by Rail Limits:** The 1.2 V supply limits large-signal output swings, risking device saturation loss if excursions exceed compliance boundaries.
+* **Short-Channel Output Resistance Attenuation:** The selected $L = 200 \text{nm}$ sizing still exhibits channel-length modulation, restricting open-loop DC gain to approximately $\approx41.75\text{ dB}$ under the selected device constraint.
 * **Sensitivity to High-Frequency Parasitic Capacitances:** High integration density scales up drain parasitic junctions, which can compromise phase margin stability boundaries at high frequencies if layout parameters diverge from schematic targets.
 
 ---
 
 ## Non-Ideal Effects & Design Trade-offs
 
-* **Common-Mode Input Cutoff:** If the input common-mode voltage drops below 0.4 V, the internal NMOS differential pair drops out of saturation ($V_{DS} < V_{GS} - V_{th}$) and enters the triode region, resulting in complete system gain attenuation. This vulnerability is neutralized by maintaining the custom injected $V_{ref} = 0.78\text{ V}$ rail.
-* **Finite Open-Loop Loading & Tracking Error:** The ideal textbook equation predicts a system gain of **15.13 dB** ($5.71\text{ V/V}$), while first-order finite gain equations predict **14.73 dB**. However, the actual simulated system gain drops to **13.92 dB**. 
- This remaining $0.81\text{ dB}$ delta is driven by **resistive loading**: the unbuffered 45 nm op-amp macros feature a high intrinsic output resistance ($r_o$) that is actively shunted by the physical resistor network. This lowers the effective operational open-loop gain ($A_{OL}$) and introduces a predictable tracking loss governed by the target architectures:
-  $$A_{V,\text{ideal}} = \left(1 + \frac{R_2 + R_4}{R_3}\right) \cdot \frac{R_8}{R_7} = 1 + \frac{2 \cdot 100\text{ k}\Omega}{42.5\text{ k}\Omega} = 5.71\text{ (15.13 dB)}$$
-  $$A_{V,\text{actual}} \approx \frac{A_{V,\text{ideal}}}{1 + \frac{A_{V,\text{ideal}}}{A_{OL}}}$$
+* **Common-Mode Input Cutoff:** If the input common-mode voltage drops below 0.4 V, the internal NMOS differential pair drops out of saturation ($V_{\text{DS}} < V_{\text{GS}} - V_{\text{th}}$) and enters the triode region, resulting in significant system gain degradation. This vulnerability is neutralized by maintaining the custom injected **V_ref = 0.78 V** rail.
+* **Finite Open-Loop Loading & Tracking Error:** The ideal textbook equation predicts a system gain of **15.13 dB** (5.71 V/V), while first-order finite gain equations predict **14.73 dB**. However, the actual simulated system gain drops to **13.92 dB**. 
+
+  This remaining 0.81 dB delta is driven by **resistive loading**: the unbuffered 45 nm op-amp macros feature a high intrinsic output resistance ($r_o$) that is actively shunted by the physical resistor network. This lowers the effective operational open-loop gain ($A_{\text{OL}}$) and introduces a predictable tracking loss. When the second-stage difference resistors are perfectly matched at $R_7 = R_8 = 100\text{ k}\Omega$, yielding a unity scaling factor ($1\text{ V/V}$), this behavior is governed by the target architectures:
+  
+  $$A_{V,\text{ideal}} = \left(1 + \frac{R_2 + R_4}{R_3}\right) \cdot \frac{R_8}{R_7} = \left(1 + \frac{2 \cdot 100\text{ k}\Omega}{42.5\text{ k}\Omega}\right) \cdot \frac{100\text{ k}\Omega}{100\text{ k}\Omega} = 5.71\text{ (15.13 dB)}$$
+  
+  $$A_{V,\text{actual}} \approx \frac{A_{V,\text{ideal}}}{1 + \frac{A_{V,\text{ideal}}}{A_{\text{OL}}}}$$
+
 * **PSRR Degradation due to Feedback Loading:** Under standalone open-loop testing with uncoupled ideal bias networks, the op-amp yields an excellent isolated PSRR+ of 139.70 dB. However, integrating the physical resistive feedback network introduces low-impedance AC leakage paths. Power rail ripples directly modulate the feedback network, causing system-level PSRR+ degradation to 25.14 dB.
 * **High-Frequency Parasitic Sensitivity:** The high layout density of the 45 nm node scales up drain parasitic junctions. If layout routing parameters diverge from schematic targets, these parasitics risk shifting secondary high-frequency poles, compromising the 64.8° phase margin.
   
@@ -259,8 +263,8 @@ The performance metrics verified across both technology nodes and system boundar
 
 | Parameter | 45 nm Two-Stage Op-Amp | 45 nm Instrumentation Amp | 180 nm Reference Block |
 | :--- | :---: | :---: | :---: |
-| **Topology Architecture** | Open Loop | Closed Loop (A_v ≈ 5.7) | Open Loop |
-| **DC Open-Loop Gain** | 41.746 dB | 13.92 dB (Closed Loop) | 47.50 dB¹ |
+| **Topology Architecture** | Open Loop | Closed Loop (A_v ≈ 5.71) | Open Loop |
+| **DC Open-Loop Gain** | 41.746 ≈ 41.75 dB | 13.92 dB (Closed Loop) | 47.50 dB¹ |
 | **Gain-Bandwidth Product (GBW)**| 50.00 MHz | — | 30.00 MHz |
 | **3dB Bandwidth (f_-3dB)** | 410.00 kHz | 10.00 MHz | 120.00 kHz¹ |
 | **Phase Margin (PM)** | 64.8° | — | 62.1°¹ |
@@ -270,8 +274,8 @@ The performance metrics verified across both technology nodes and system boundar
 | **Supply Voltage (V_DD)** | 1.2 V | 1.2 V | 1.8 V |
 
 ---
-¹ *Note: Extracted explicitly from the 180nm open-loop AC characterization data (`gain_180.jpg`, `magnitude180opamp.jpg`).*
-² *Note: Attenuated below detectable measurement thresholds via closed-loop feedback matrix normalization.*
+¹ *Note: Extracted explicitly from the 180 nm open-loop AC characterization data (`gain_180.jpg`, `magnitude180opamp.jpg`).*
+² *Note: Suppressed at the system output via symmetrical differential balancing and the high common-mode rejection ratio (CMRR) of the difference stage.*
 
 ---
 
