@@ -262,7 +262,6 @@ The performance metrics verified across both technology nodes and system boundar
 | **DC Open-Loop Gain** | 41.746 dB | 13.92 dB (Closed Loop) | 58.20 dB¹ |
 | **Gain-Bandwidth Product (GBW)**| 50.00 MHz | — | 30.00 MHz |
 | **3dB Bandwidth (f_-3dB)** | 410.00 kHz | 10.00 MHz | 120.00 kHz¹ |
-| **Slew Rate (SR)** | 20.50 V/µs | — | — |
 | **Phase Margin (PM)** | 64.8° | — | 62.1°¹ |
 | **CMRR (Low Frequency)** | 28.93 dB | 76.87 dB | — |
 | **PSRR+ (Low Frequency)** | 139.70 dB | 25.14 dB (Loaded) | — |
