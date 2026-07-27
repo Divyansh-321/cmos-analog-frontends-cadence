@@ -155,14 +155,14 @@ The project leverages the **GPDK180 (180 nm CMOS)** and **GPDK045 (45 nm CMOS)**
 
 
 ### 2. Deep Submicron 45 nm Node Sizing (V_DD = 1.2 V)
-| Instance | Circuit Function | Device Type | Width (W) | Length (L) | Aspect Ratio (W/L) |
-| :--- | :--- | :--- | :---: | :---: | :---: |
-| **M1, M2** | Input Differential Pair | NMOS | 2.20 µm | 200 nm | 10.93 |
-| **M3, M4** | Active Current Mirror Load | PMOS | 170 nm | 200 nm | 0.84 |
-| **M5** | Tail Current Source | NMOS | 630 nm | 200 nm | 3.12 |
-| **M6** | Common-Source Driver Stage | PMOS | 7.04 µm | 200 nm | 35.20 |
-| **M7** | Second-Stage Active Load | NMOS | 13.07 µm | 200 nm | 65.35 |
-| **M8** | Reference Bias Generator | NMOS | 630 nm | 200 nm | 3.12 |
+| Instance | Circuit Function | Device Type | Width (W) | Length (L) | Nominal Ratio (W/L) | Effective Ratio ($W_{eff}/L_{eff}$) |
+| :--- | :--- | :--- | :---: | :---: | :---: | :---: |
+| **M1, M2** | Input Differential Pair | NMOS | 2.20 µm | 200 nm | 11.00 | 10.93 |
+| **M3, M4** | Active Current Mirror Load | PMOS | 170 nm | 200 nm | 0.85 | 0.84 |
+| **M5** | Tail Current Source | NMOS | 630 nm | 200 nm | 3.15 | 3.12 |
+| **M6** | Common-Source Driver Stage | PMOS | 7.04 µm | 200 nm | 35.20 | 35.20 |
+| **M7** | Second-Stage Active Load | NMOS | 13.07 µm | 200 nm | 65.35 | 65.35 |
+| **M8** | Reference Bias Generator | NMOS | 630 nm | 200 nm | 3.15 | 3.12 |
 
 ### Design Note on Literature Reproducibility
 
@@ -227,6 +227,9 @@ $$\left(\frac{W}{L}\right)_7 = \frac{I_{D7}}{I_{D5}} \left(\frac{W}{L}\right)_5$
 ### 9. Total System Open-Loop Small-Signal DC Voltage Gain
 $$A_v = \left( \frac{g_{m1}}{g_{ds2} + g_{ds4}} \right) \left( \frac{g_{m6}}{g_{ds6} + g_{ds7}} \right)$$
 
+### 10. Three-Op-Amp Instrumentation Amplifier Closed-Loop Voltage Gain
+$$A_{V,\text{closed}} = \left(1 + \frac{2R_F}{R_G}\right) \left(\frac{R_3}{R_2}\right)$$
+
 ---
 
 # Limitations
@@ -239,8 +242,12 @@ $$A_v = \left( \frac{g_{m1}}{g_{ds2} + g_{ds4}} \right) \left( \frac{g_{m6}}{g_{
 
 ## Non-Ideal Effects & Design Trade-offs
 
-* **Common-Mode Input Cutoff:** If the input common-mode voltage drops below 0.4 V, the internal NMOS differential pair drops out of saturation (V_DS < V_GS - V_th) and enters the triode region, resulting in complete system gain attenuation. This vulnerability is neutralized by maintaining the custom injected V_ref = 0.78 V rail.
-* **PSRR Degradation due to Feedback Loading:** Under standalone open-loop testing with uncoupled ideal bias networks, the op-amp yields an excellent isolated PSRR+ of 139.70 dB. However, integrating the physical resistive feedback network (100 kΩ / 42.5 kΩ) introduces low-impedance AC leakage paths. Power rail ripples directly modulate the feedback network, causing system-level PSRR+ degradation to 25.14 dB.
+* **Common-Mode Input Cutoff:** If the input common-mode voltage drops below 0.4 V, the internal NMOS differential pair drops out of saturation ($V_{DS} < V_{GS} - V_{th}$) and enters the triode region, resulting in complete system gain attenuation. This vulnerability is neutralized by maintaining the custom injected $V_{ref} = 0.78\text{ V}$ rail.
+* **Finite Open-Loop Loading & Tracking Error:** Using the ideal instrumentation amplifier gain expression with your design's feedback resistors ($R_F = 100\text{ k}\Omega$, $R_G = 42.5\text{ k}\Omega$) and a unity-gain difference stage ($\frac{R_3}{R_2} = 1$), the ideal target gain is:
+  $$A_{V,\text{ideal}} = 1 + \frac{2 \cdot 100\text{ k}\Omega}{42.5\text{ k}\Omega} = 5.71\text{ (15.13 dB)}$$
+  However, because the short-channel 45 nm macro cells suffer from severe channel-length modulation, the open-loop gain is bounded at a finite $A_{OL} \approx 41.75\text{ dB}$ (122.3 V/V). This finite gain, combined with the low-impedance resistive network drawing signal current directly from the high output resistance ($r_o$) of the op-amps, introduces a predictable tracking loss. This suppresses the actual simulated closed-loop system gain to $13.92\text{ dB}$ ($\approx 4.97$ V/V), aligning with the practical closed-loop relationship:
+  $$A_{V,\text{actual}} \approx \frac{A_{V,\text{ideal}}}{1 + \frac{A_{V,\text{ideal}}}{A_{OL}}}$$
+* **PSRR Degradation due to Feedback Loading:** Under standalone open-loop testing with uncoupled ideal bias networks, the op-amp yields an excellent isolated PSRR+ of 139.70 dB. However, integrating the physical resistive feedback network introduces low-impedance AC leakage paths. Power rail ripples directly modulate the feedback network, causing system-level PSRR+ degradation to 25.14 dB.
 * **High-Frequency Parasitic Sensitivity:** The high layout density of the 45 nm node scales up drain parasitic junctions. If layout routing parameters diverge from schematic targets, these parasitics risk shifting secondary high-frequency poles, compromising the 64.8° phase margin.
 ---
 
