@@ -243,12 +243,13 @@ $$A_{V,\text{closed}} = \left(1 + \frac{R_2 + R_4}{R_3}\right) \left(\frac{R_8}{
 ## Non-Ideal Effects & Design Trade-offs
 
 * **Common-Mode Input Cutoff:** If the input common-mode voltage drops below 0.4 V, the internal NMOS differential pair drops out of saturation ($V_{DS} < V_{GS} - V_{th}$) and enters the triode region, resulting in complete system gain attenuation. This vulnerability is neutralized by maintaining the custom injected $V_{ref} = 0.78\text{ V}$ rail.
-* **Finite Open-Loop Loading & Tracking Error:** Using the ideal instrumentation amplifier gain expression with your design's specific input symmetric feedback resistors ($R_2 = R_4 = 100\text{ k}\Omega$), gain-setting resistor ($R_3 = 42.5\text{ k}\Omega$), and a balanced unity-gain difference stage ($\frac{R_8}{R_7} = 1$), the ideal target gain is:
+* **Finite Open-Loop Loading & Tracking Error:** The ideal textbook equation predicts a system gain of **15.13 dB** ($5.71\text{ V/V}$), while first-order finite gain equations predict **14.73 dB**. However, the actual simulated system gain drops to **13.92 dB**. 
+ This remaining $0.81\text{ dB}$ delta is driven by **resistive loading**: the unbuffered 45 nm op-amp macros feature a high intrinsic output resistance ($r_o$) that is actively shunted by the physical resistor network. This lowers the effective operational open-loop gain ($A_{OL}$) and introduces a predictable tracking loss governed by the target architectures:
   $$A_{V,\text{ideal}} = \left(1 + \frac{R_2 + R_4}{R_3}\right) \cdot \frac{R_8}{R_7} = 1 + \frac{2 \cdot 100\text{ k}\Omega}{42.5\text{ k}\Omega} = 5.71\text{ (15.13 dB)}$$
-  However, because the short-channel 45 nm macro cells suffer from severe channel-length modulation, the open-loop gain is bounded at a finite $A_{OL} \approx 41.75\text{ dB}$ (122.3 V/V). This finite gain, combined with the low-impedance resistive network drawing signal current directly from the high output resistance ($r_o$) of the op-amps, introduces a predictable tracking loss. This suppresses the actual simulated closed-loop system gain to $13.92\text{ dB}$ ($\approx 4.97$ V/V), aligning with the practical closed-loop relationship:
   $$A_{V,\text{actual}} \approx \frac{A_{V,\text{ideal}}}{1 + \frac{A_{V,\text{ideal}}}{A_{OL}}}$$
 * **PSRR Degradation due to Feedback Loading:** Under standalone open-loop testing with uncoupled ideal bias networks, the op-amp yields an excellent isolated PSRR+ of 139.70 dB. However, integrating the physical resistive feedback network introduces low-impedance AC leakage paths. Power rail ripples directly modulate the feedback network, causing system-level PSRR+ degradation to 25.14 dB.
 * **High-Frequency Parasitic Sensitivity:** The high layout density of the 45 nm node scales up drain parasitic junctions. If layout routing parameters diverge from schematic targets, these parasitics risk shifting secondary high-frequency poles, compromising the 64.8° phase margin.
+  
 ---
 
 # Future Improvements
