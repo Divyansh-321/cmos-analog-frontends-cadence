@@ -198,7 +198,7 @@ The reported AC, transient, DC, and parametric analyses were performed in Cadenc
 
 # Core Design Equations
 
-Detailed analytical design equations used for the two-stage operational amplifier topology sizing, boundary conditions, and open-loop DC gain calculations are formalized below; readers interested primarily in system results may skip directly to the simulation results section
+Detailed analytical design equations used for the two-stage operational amplifier topology sizing, boundary conditions, and open-loop DC gain calculations are formalized below; readers interested primarily in system results may skip directly to the simulation results section.
 
 ### 1. Miller Compensation Boundary Condition
 $$C_c \ge 0.22 \cdot C_L$$
