@@ -1,6 +1,6 @@
 # CMOS Analog Front-End Design & Technology Scaling Study (180nm vs 45nm)
 
-An analog integrated circuit design and characterization study evaluating short-channel scaling effects using industrial PDKs in Cadence Virtuoso. This project contrasts a legacy baseline node (180 nm) against a deep-submicron node (45 nm) to implement a high-CMRR three-op-amp instrumentation amplifier (INA).
+An analog integrated circuit design and characterization study evaluating short-channel scaling effects using industrial PDKs in Cadence Virtuoso. This project contrasts a legacy baseline node (180 nm) against a deep-submicron node (45 nm) to implement a precision three-op-amp instrumentation amplifier (INA).
 
 ---
 
@@ -32,7 +32,7 @@ The core OTA topology and initial geometric baseline were derived from the refer
 ### Individual Contribution (Author)
 - Designed and implemented the complete 45 nm two-stage operational amplifier macro cell in Cadence Virtuoso.
 - Developed, routed, and tuned the closed-loop 45 nm instrumentation amplifier using the custom op-amp structural blocks.
-- Performed high-fidelity Spectre AC, transient, DC, and parametric sweep analyses.
+- Performed Spectre-based AC, transient, DC, and parametric sweep analyses.
 - Investigated and corrected system-level CMRR, PSRR, gain-bandwidth, and circuit loading trade-offs.
 - Optimized the precision resistor feedback network to recover closed-loop tracking and gain accuracy.
 
@@ -198,7 +198,7 @@ The reported AC, transient, DC, and parametric analyses were performed in Cadenc
 
 # Core Design Equations
 
-The analytical design equations used for the two-stage operational amplifier topology sizing, boundary conditions, and open-loop DC gain calculations are formalized below:
+Detailed analytical design equations used for the two-stage operational amplifier topology sizing, boundary conditions, and open-loop DC gain calculations are formalized below; readers interested primarily in system results may skip directly to the simulation results section
 
 ### 1. Miller Compensation Boundary Condition
 $$C_c \ge 0.22 \cdot C_L$$
