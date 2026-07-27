@@ -6,18 +6,21 @@ An analog integrated circuit design and characterization study evaluating short-
 
 # Problem Statement & Motivation
 
-Designing precision analog circuits in deep sub-micron nodes like 45nm presents significant challenges due to reduced supply voltages (1.2V), limited voltage headroom, and short-channel effects that degrade intrinsic transistor gain. While the Two-Stage Operational Amplifier is a fundamental building block for analog signal processing, its standalone performance—specifically regarding Common Mode Rejection Ratio (CMRR) and susceptibility to loading—is often insufficient for direct sensor interfacing in noisy environments. 
+This project evaluates the impact of CMOS technology scaling on precision analog front-end design by comparing a 180 nm long-channel baseline with a custom 45 nm implementation in Cadence Virtuoso.
 
-Conversely, the Instrumentation Amplifier (INA) topology is designed to offer high input impedance and superior noise rejection, but this comes at the cost of increased power, area, and potential bandwidth limitations.Therefore, this project investigates the quantitative trade-offs involved in transitioning from a standalone operational amplifier to a three-op-amp instrumentation amplifier within a scaled CMOS technology node. 
+The primary objective is to quantify how reduced supply voltage, limited voltage headroom, and short-channel effects influence operational amplifier performance, and to evaluate the trade-offs introduced when integrating the amplifier into a three-op-amp instrumentation amplifier (INA).
+
+The study focuses on recovering precision under deep-submicron constraints through transistor sizing, compensation design, reference biasing, and closed-loop feedback optimization.
 
 ---
 
-# System Overview 
+# System Overview
 
-This project implements an analog front-end framework that scales fundamental building blocks across technology nodes. The design incorporates three distinct blocks:
-1. **180 nm Baseline Operational Amplifier:** Evaluated exclusively via open-loop AC analysis (gain and phase) to establish a long-channel performance reference.
-2. **45 nm Custom Operational Amplifier:** A submicron cell optimized to mitigate short-channel degradation, characterized via comprehensive AC, DC, transient, and parametric sweeps.
-3. **45 nm Instrumentation Amplifier:** A system-level closed-loop amplifier constructed using the custom 45 nm op-amp cells as structural macros.
+The repository contains three progressively integrated analog building blocks evaluated using Cadence Virtuoso and Spectre simulations:
+
+1. **180 nm Two-Stage Operational Amplifier** — Long-channel reference characterized using open-loop AC analysis.
+2. **45 nm Two-Stage Operational Amplifier** — Custom implementation optimized for deep-submicron operation through sizing, compensation, and bias optimization.
+3. **45 nm Three-Op-Amp Instrumentation Amplifier** — Closed-loop system assembled from the custom OTA cells and evaluated under practical loading conditions.
 
 ### Signal Flow
 Differential Input -> 45 nm NMOS Input Differential Pair -> Active PMOS Load Stage -> Miller Compensation Network -> Second-Stage PMOS Common-Source Driver -> 3-Op-Amp INA Topology Integration -> Resistor Feedback Network -> V_ref Bias Rail Injection -> Differential Output
@@ -30,8 +33,8 @@ Differential Input -> 45 nm NMOS Input Differential Pair -> Active PMOS Load Sta
 The core OTA topology and initial geometric baseline were derived from the referenced literature by Vasanthi et al. [1] and Sharmila Banu et al. [2]. The three-op-amp instrumentation amplifier architecture, compensation strategy, headroom-recovery biasing methodology, automated parameter sensitivity analysis, cross-node technology scaling study, 17-testbench verification flow, and system-level performance evaluations presented in this repository were developed entirely as part of this project.
 
 ### Individual Contribution (Author)
-- Designed and implemented the complete 45 nm two-stage operational amplifier macro cell in Cadence Virtuoso.
-- Developed, routed, and tuned the closed-loop 45 nm instrumentation amplifier using the custom op-amp structural blocks.
+- Designed and implemented the complete 45 nm two-stage operational amplifier in Cadence Virtuoso.
+- Designed, integrated, and tuned the closed-loop 45 nm instrumentation amplifier using the custom op-amp structural blocks.
 - Performed Spectre-based AC, transient, DC, and parametric sweep analyses.
 - Investigated and corrected system-level CMRR, PSRR, gain-bandwidth, and circuit loading trade-offs.
 - Optimized the precision resistor feedback network to recover closed-loop tracking and gain accuracy.
@@ -47,18 +50,17 @@ The design enforces strict boundaries across process parameters, supply rails, a
 
 * **180 nm Baseline Node:** Supply voltage V_DD = 1.8 V, Input Common-Mode Range (ICMR) = 0.8 V to 1.6 V. Enforced minimum channel length L = 500 nm to ensure long-channel behavior, driving a load capacitance C_L = 2 pF.
 * **45 nm Submicron Node:** Supply voltage V_DD = 1.2 V, compressed ICMR = 0.8 V to 1.0 V. Physical channel length is established at an optimized limit of L = 200 nm to balance short-channel effects against speed, driving a load capacitance C_L = 4 pF.
-* **Stability Limits:** To maintain absolute closed-loop stability, the internal Miller compensation capacitor constraint is bounded by C_c ≥ 0.22 × C_L.
+* **Stability Limits:** To maintain closed-loop stability, the internal Miller compensation capacitor constraint is bounded by C_c ≥ 0.22 × C_L.
 
 ---
 
-# Key Features
+# Technical Contributions
 
-* **Multi-Node Scaling Benchmark:** Quantitative comparison between 180 nm long-channel and 45 nm short-channel constraints.
-* **Short-Channel Mitigation:** Intentional over-sizing of channel lengths (L = 200 nm) to preserve intrinsic gain.
-* **Headroom Recovery:** Custom V_ref bias rail injection to prevent input-stage cutoff under compressed supply voltages.
-* **Parametric Sensitivity Mapping:** Automated aspect ratio sweeps to isolate key layout-sensitive transconductance paths.
-* **Loading Error Correction:** Iterative feedback resistor matching to eliminate closed-loop tracking losses.
-
+* **Comparative Technology Scaling:** Characterization of 180 nm and 45 nm CMOS implementations to quantify multi-node short-channel effects.
+* **Channel-Length Optimization:** Strategic over-sizing (L = 200 nm) to mitigate severe channel-length modulation and preserve an intrinsic gain ($A_0$) baseline.
+* **Reference Bias Injection:** Implementation of a custom $V_{ref} = 0.78\text{ V}$ bias rail to maintain device saturation under a compressed 1.2 V supply.
+* **Parametric Sensitivity Mapping:** Automated aspect ratio sweeps to isolate layout-sensitive transconductance paths.
+* **Loading Error Correction:** Precision feedback resistor matching to eliminate closed-loop tracking losses and improve gain accuracy.
 
 ---
 
@@ -72,10 +74,9 @@ The complete closed-loop 45 nm instrumentation amplifier is shown below. The des
 
 # Design Philosophy
 
-Instead of relying on unscaled process parameters, this design mitigates low-node physical limitations (such as severe channel-length modulation and gate-oxide capacitance) through topology-level modifications and conservative sizing:
-* **Over-sizing Channel Lengths:** Sizing transistors above the lithographic minimum (200 nm vs. 45 nm) stabilizes the output resistance (r_o), maintaining a robust open-loop gain baseline.
-* **Symmetric Differential Routing:** Prioritizes structural symmetry to maximize common-mode noise isolation.
-* **Active Reference Biasing:** Restores compressed V_DS headroom through deliberate reference offsets rather than compounding stage gain, keeping devices firmly in the saturation region.
+The design prioritizes predictable analog performance over minimum geometry.
+
+Rather than maximizing transistor density, channel lengths were intentionally increased where necessary to preserve intrinsic gain and output resistance. Reference biasing was introduced to maintain device saturation under limited voltage headroom, while symmetric differential layouts were used to improve common-mode rejection.
 
 ---
 
@@ -88,14 +89,6 @@ Instead of relying on unscaled process parameters, this design mitigates low-nod
 | **Process Node Scale** | **45 nm Deep Submicron** | 180 nm Traditional CMOS | **Density & Speed over Headroom:** 45 nm maximizes integration density and operating speed, but compresses the supply rail to 1.2 V and introduces severe short-channel effects. |
 | **Sizing Constraint** | **Standardized L = 200 nm** | Lithographic L = 45 nm | **Intrinsic Gain over Speed:** Sizing at 200 nm provides an intentional guardband that preserves an open-loop gain baseline of approx 41.75 dB, preventing complete gain collapse from channel-length modulation. |
 | **Reference Bias Topology**| **Injected V_ref = 0.78 V** | Ground Reference (0 V) | **Saturation Preservation over Simplicity:** Tying the difference stage reference to 0 V pulls the common-mode level to approx 0.4 V, driving the NMOS input pair into cutoff. Injecting 0.78 V restores critical V_DS headroom. |
-
----
-
-# Engineering Highlights
-
-* Comparative technology-scaling study between 180 nm and 45 nm CMOS.
-* Quantified the impact of closed-loop loading on CMRR and PSRR.
-* Optimized transistor sizing and resistor feedback to recover performance under short-channel effects.
 
 ---
 
@@ -166,7 +159,7 @@ The project leverages the **GPDK180 (180 nm CMOS)** and **GPDK045 (45 nm CMOS)**
 
 ### Design Note on Literature Reproducibility
 
-The transistor dimensions used in this project follow the geometric baseline reported by **Vasanthi et al.** [1] and subsequently reproduced by **Sharmila Banu et al.** [2].
+The transistor dimensions used in this project follow the geometric baseline reported by **Vasanthi et al.** [1] and later reproduced by **Sharmila Banu et al.** [2].
 
 During replication of the published design, a reproducibility challenge was encountered. Although both papers report an open-loop gain of **95.37 dB** in the text, the published AC gain-phase figures are provided at a resolution that does not permit reliable quantitative extraction or independent verification of the reported values. Consequently, numerical comparison in this work was performed using the published transistor dimensions rather than visual estimation from the figures.
 
@@ -186,19 +179,19 @@ To support reproducibility, this repository provides the complete simulation met
 
 # Repository Contents
 
-This repository contains design schematics, simulation results, and documentation. The original Cadence design database is not included because it depends on proprietary PDKs.
+This repository provides design schematics, simulation results, testbench outputs, analytical derivations, and supporting documentation. The original Cadence design database is excluded because it depends on proprietary GPDK process libraries.
 
 ---
 
 # Simulation Methodology
 
-The reported AC, transient, DC, and parametric analyses were performed in Cadence Virtuoso using Spectre with the GPDK045 and GPDK180 process libraries. Representative waveforms and schematic captures are provided in this repository.
+All results were obtained using Cadence Virtuoso IC6.1.8 with the Spectre simulator and GPDK045/GPDK180 process libraries. AC, transient, DC, and parametric analyses were performed using dedicated verification testbenches. Representative schematics and simulation waveforms are included for reproducibility.
 
 ---
 
 # Core Design Equations
 
-Detailed analytical design equations used for the two-stage operational amplifier topology sizing, boundary conditions, and open-loop DC gain calculations are formalized below; readers interested primarily in system results may skip directly to the simulation results section.
+The following equations summarize the analytical relationships used during transistor sizing, compensation design, and gain estimation.
 
 ### 1. Miller Compensation Boundary Condition
 $$C_c \ge 0.22 \cdot C_L$$
@@ -266,7 +259,7 @@ The performance metrics verified across both technology nodes and system boundar
 
 | Parameter | 45 nm Two-Stage Op-Amp | 45 nm Instrumentation Amp | 180 nm Reference Block |
 | :--- | :---: | :---: | :---: |
-| **Topology Architecture** | Open Loop | Closed Loop (A_v ≈ 5) | Open Loop |
+| **Topology Architecture** | Open Loop | Closed Loop (A_v ≈ 5.7) | Open Loop |
 | **DC Open-Loop Gain** | 41.746 dB | 13.92 dB (Closed Loop) | 47.50 dB¹ |
 | **Gain-Bandwidth Product (GBW)**| 50.00 MHz | — | 30.00 MHz |
 | **3dB Bandwidth (f_-3dB)** | 410.00 kHz | 10.00 MHz | 120.00 kHz¹ |
@@ -282,12 +275,12 @@ The performance metrics verified across both technology nodes and system boundar
 
 ---
 
-# Key Takeaways
+# Engineering Outcomes
 
-- Demonstrated the impact of technology scaling from 180 nm to 45 nm CMOS.
-- Quantified the trade-offs between intrinsic gain, bandwidth, CMRR, and PSRR.
-- Showed that intentional channel-length over-sizing and optimized feedback networks recover precision despite short-channel effects.
-- Verified the effectiveness of the three-op-amp instrumentation amplifier architecture for precision analog front-end applications.
+- Quantified the impact of scaling from 180 nm to 45 nm CMOS on gain, bandwidth, CMRR, and PSRR.
+- Demonstrated performance recovery through channel-length optimization and reference biasing.
+- Identified finite open-loop gain and resistive loading as the primary sources of closed-loop gain deviation.
+- Validated the three-op-amp instrumentation amplifier as an effective precision analog front-end under deep-submicron constraints.
 
 ---
 
