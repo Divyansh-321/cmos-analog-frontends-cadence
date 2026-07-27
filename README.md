@@ -259,7 +259,7 @@ The performance metrics verified across both technology nodes and system boundar
 | Parameter | 45 nm Two-Stage Op-Amp | 45 nm Instrumentation Amp | 180 nm Reference Block |
 | :--- | :---: | :---: | :---: |
 | **Topology Architecture** | Open Loop | Closed Loop (A_v ≈ 5) | Open Loop |
-| **DC Open-Loop Gain** | 41.746 dB | 13.92 dB (Closed Loop) | 58.20 dB¹ |
+| **DC Open-Loop Gain** | 41.746 dB | 13.92 dB (Closed Loop) | 47.50 dB¹ |
 | **Gain-Bandwidth Product (GBW)**| 50.00 MHz | — | 30.00 MHz |
 | **3dB Bandwidth (f_-3dB)** | 410.00 kHz | 10.00 MHz | 120.00 kHz¹ |
 | **Phase Margin (PM)** | 64.8° | — | 62.1°¹ |
