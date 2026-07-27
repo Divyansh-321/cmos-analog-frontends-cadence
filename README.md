@@ -22,20 +22,23 @@ This project implements an analog front-end framework that scales fundamental bu
 ### Signal Flow
 Differential Input -> 45 nm NMOS Input Differential Pair -> Active PMOS Load Stage -> Miller Compensation Network -> Second-Stage PMOS Common-Source Driver -> 3-Op-Amp INA Topology Integration -> Resistor Feedback Network -> V_ref Bias Rail Injection -> Differential Output
 
+---
+
 ## Contribution Breakdown
 
-### Individual Contribution
+> **Scope of Work & Attribution Statement:**
+> The core OTA topology and initial geometric baseline were derived from the referenced literature by Vasanthi et al. [1] and Sharmila Banu et al. [2]. The three-op-amp instrumentation amplifier architecture, compensation strategy, headroom-recovery biasing methodology, automated parameter sensitivity analysis, cross-node technology scaling study, 17-testbench verification flow, and system-level performance evaluations presented in this repository were developed entirely as part of this project.
 
-- Designed and implemented the complete 45 nm two-stage operational amplifier in Cadence Virtuoso.
-- Developed and tuned the 45 nm instrumentation amplifier using the custom op-amp building blocks.
-- Performed AC, transient, DC, and parametric sweep analyses.
-- Investigated CMRR, PSRR, gain-bandwidth, and loading trade-offs.
-- Optimized the resistor feedback network to recover closed-loop gain accuracy.
+### Individual Contribution (Author)
+- Designed and implemented the complete 45 nm two-stage operational amplifier macro cell in Cadence Virtuoso.
+- Developed, routed, and tuned the closed-loop 45 nm instrumentation amplifier using the custom op-amp structural blocks.
+- Performed high-fidelity Spectre AC, transient, DC, and parametric sweep analyses.
+- Investigated and corrected system-level CMRR, PSRR, gain-bandwidth, and circuit loading trade-offs.
+- Optimized the precision resistor feedback network to recover closed-loop tracking and gain accuracy.
 
 ### Team Contribution
-
-- Designed and simulated the 180 nm two-stage operational amplifier.
-- Performed open-loop AC characterization to establish the technology-scaling baseline.
+- Designed and simulated the legacy 180 nm two-stage operational amplifier baseline cell.
+- Performed open-loop AC characterization on the 180 nm node to establish the technology-scaling performance reference.
 ---
 
 # Design Constraints & Operating Conditions
@@ -161,13 +164,23 @@ The project leverages the **GPDK180 (180 nm CMOS)** and **GPDK045 (45 nm CMOS)**
 | **M7** | Second-Stage Active Load | NMOS | 13.07 µm | 200 nm | 65.35 |
 | **M8** | Reference Bias Generator | NMOS | 630 nm | 200 nm | 3.12 |
 
- **Design Note on Geometric Scaling & Performance Loss Prevention:**
- The physical transistor dimensions listed above correspond exactly to the finalized project report values. Minor deviations between raw analytical division ($W/L$) and the listed aspect ratios are highly intentional. 
- 
- During schematic capture, these parameters were systematically scaled and adjusted to account for manufacturing grid constraints (such as layout snapping rules) and to **prevent critical performance losses**. By optimization of these effective geometric boundaries, the design actively counteracts severe deep-submicron short-channel effects—specifically channel-length modulation (CLM) and V_{th} roll-off. This stabilizes the transistor output resistance (r_o), preventing severe degradation of the open-loop DC gain baseline and preserving critical voltage headroom.
+### Design Note on Literature Reproducibility
+
+The transistor dimensions used in this project follow the geometric baseline reported by **Vasanthi et al.** [1] and subsequently reproduced by **Sharmila Banu et al.** [2].
+
+During replication of the published design, a reproducibility challenge was encountered. Although both papers report an open-loop gain of **95.37 dB** in the text, the published AC gain-phase figures are provided at a resolution that does not permit reliable quantitative extraction or independent verification of the reported values. Consequently, numerical comparison in this work was performed using the published transistor dimensions rather than visual estimation from the figures.
+
+Using the same nominal geometry with contemporary **BSIM4 foundry PDK models** in **Cadence Spectre**, the simulated OTA achieved an open-loop gain of **41.75 dB**. This observed difference is consistent with the effects of realistic deep-submicron device behavior, including reduced intrinsic output resistance resulting from channel-length modulation and threshold-voltage roll-off, which become increasingly significant at the 45 nm technology node.
+
+To support reproducibility, this repository provides the complete simulation methodology, transistor sizing, schematic, testbench configuration, and high-resolution simulation waveforms, allowing readers to independently reproduce and evaluate the reported results.
 
 ---
-*Note: Sizing metrics correspond directly to the schematic constraints configured in `opamp180.png` and `opamp.png`. All device multipliers are set to M=1 to simplify the comparison of raw gate area scaling (W \times L). Matching pairs (M1-M2, M3-M4) are designated for common-centroid layout routing structures.*
+
+## References
+
+[1] R. Vasanthi, A. Suganthi, and P. Subathra, "Design and Analysis of a 1.2V OTA-Based Active Filters in 45nm CMOS Technology," *International Journal of Scientific & Engineering Research (IJSER)*, vol. 5, no. 5, pp. 1602–1606, May 2014.
+
+[2] S. Sharmila Banu, H. K. Lingam, C. Mekala, and M. Maddileti, "Design and Analysis of a 1.2V OTA-Based Active Filters in 45nm CMOS Technology," *Proceedings of the 3rd International Conference on Device Intelligence, Computing and Communication Technologies (DICCT)*, 2025. DOI: 10.1109/DICCT64131.2025.10986514. [[IEEE Xplore]](https://ieeexplore.ieee.org/document/10986514)
 
 ---
 
