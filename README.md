@@ -176,14 +176,6 @@ To support reproducibility, this repository provides the complete simulation met
 
 ---
 
-## References
-
-[1] R. Vasanthi, A. Suganthi, and P. Subathra, "Design and Analysis of a 1.2V OTA-Based Active Filters in 45nm CMOS Technology," *International Journal of Scientific & Engineering Research (IJSER)*, vol. 5, no. 5, pp. 1602–1606, May 2014.
-
-[2] S. Sharmila Banu, H. K. Lingam, C. Mekala, and M. Maddileti, "Design and Analysis of a 1.2V OTA-Based Active Filters in 45nm CMOS Technology," *Proceedings of the 3rd International Conference on Device Intelligence, Computing and Communication Technologies (DICCT)*, 2025. DOI: 10.1109/DICCT64131.2025.10986514. [[IEEE Xplore]](https://ieeexplore.ieee.org/document/10986514)
-
----
-
 # Software Stack
 
 * **Design Environment:** Cadence Virtuoso IC6.1.8.
@@ -351,6 +343,14 @@ The following cellviews, verification testbenches, and macro behaviors follow th
   ![CMRR of Complete Instrumentation Amplifier](results/instrumentation_amp_45nm/instrum_cmrr_only_new.jpg)
 * **System Loaded Network PSRR Spectrum:**
   ![PSRR of Complete Instrumentation Amplifier](results/instrumentation_amp_45nm/instrum_psrr.jpg)
+
+---
+
+## References
+
+[1] R. Vasanthi, A. Suganthi, and P. Subathra, "Design and Analysis of a 1.2V OTA-Based Active Filters in 45nm CMOS Technology," *International Journal of Scientific & Engineering Research (IJSER)*, vol. 5, no. 5, pp. 1602–1606, May 2014.
+
+[2] S. Sharmila Banu, H. K. Lingam, C. Mekala, and M. Maddileti, "Design and Analysis of a 1.2V OTA-Based Active Filters in 45nm CMOS Technology," *Proceedings of the 3rd International Conference on Device Intelligence, Computing and Communication Technologies (DICCT)*, 2025. DOI: 10.1109/DICCT64131.2025.10986514. [[IEEE Xplore]](https://ieeexplore.ieee.org/document/10986514) 
 
 ---
 
